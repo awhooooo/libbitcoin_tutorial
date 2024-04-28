@@ -15,7 +15,7 @@ $ sudo apt-get install build-essential autoconf automake libtool pkg-config git
 $ cd /Users/legacy/C++_bitcoin
 $ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin/version3/install.sh
 $ chmod +x install.sh
-$ ./install.sh --prefix=/home/me/myprefix --build-boost --disable-shared
+$ ./install.sh --prefix=/Users/legacy/C++_bitcoin/installation_prefix --build-boost --disable-shared
 ```
 
 ## Installing libbitcoin-protocol
@@ -27,7 +27,7 @@ $ git branch --all
 $ git checkout remotes/origin/version3
 $ git checkout -b version3
 $ ./autogen.sh
-$ ./configure --with-boost=/home/me/myprefix/include --with-boost-libdir=/home/me/myprefix/lib LDFLAGS="-L/home/me/myprefix/lib" CPPFLAGS="-I/home/me/myprefix/include" --prefix=/home/me/myprefix
+$ ./configure --with-boost=/Users/legacy/C++_bitcoin/installation_prefix/include --with-boost-libdir=/Users/legacy/C++_bitcoin/installation_prefix/lib LDFLAGS="-L/Users/legacy/C++_bitcoin/installation_prefix/lib" CPPFLAGS="-I/Users/legacy/C++_bitcoin/installation_prefix/include" --prefix=/Users/legacy/C++_bitcoin/installation_prefix
 $ make
 $ sudo make install
 ```
@@ -41,13 +41,13 @@ $ git branch --all
 $ git checkout remotes/origin/version3
 $ git checkout -b version3
 $ ./autogen.sh
-$ ./configure --with-boost=/home/me/myprefix/include --with-boost-libdir=/home/me/myprefix/lib LDFLAGS="-L/home/me/myprefix/lib" CPPFLAGS="-I/home/me/myprefix/include" --prefix=/home/me/myprefix
+$ ./configure --with-boost=/Users/legacy/C++_bitcoin/installation_prefix/include --with-boost-libdir=/Users/legacy/C++_bitcoin/installation_prefix/lib LDFLAGS="-L/Users/legacy/C++_bitcoin/installation_prefix/lib" CPPFLAGS="-I/Users/legacy/C++_bitcoin/installation_prefix/include" --prefix=/Users/legacy/C++_bitcoin/installation_prefix
 $ make
 $ sudo make install
 ```
 ## After installation
 After installation, you might need to add the installation path to your system's PATH environment variable to use the installed binaries.
-Make sure that every files are in the pkg-config directory (in this case, /home/me/myprefix/lib/pkgconfig).
+Make sure that every files are in the pkg-config directory (in this case, /Users/legacy/C++_bitcoin/installation_prefix/lib/pkgconfig).
 The directory should contain files like libsecp256k1.pc and libbitcoin-system.pc ...etc.
 
 ```bash
