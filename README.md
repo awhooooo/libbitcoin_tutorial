@@ -45,6 +45,21 @@ $ ./configure --with-boost=/Users/legacy/C++_bitcoin/installation_prefix/include
 $ make
 $ sudo make install
 ```
+
+## Installing libbitcoin-network
+```bash
+$ cd /Users/legacy/C++_bitcoin/build-libbitcoin-network
+$ git clone https://github.com/libbitcoin/libbitcoin-netwokr.git
+$ cd libbitcoin-network
+$ git branch --all
+$ git checkout remotes/origin/version3
+$ git checkout -b version3
+$ ./autogen.sh
+$ ./configure --with-boost=/Users/legacy/C++_bitcoin/installation_prefix/include --with-boost-libdir=/Users/legacy/C++_bitcoin/installation_prefix/lib LDFLAGS="-L/Users/legacy/C++_bitcoin/installation_prefix/lib" CPPFLAGS="-I/Users/legacy/C++_bitcoin/installation_prefix/include" --prefix=/Users/legacy/C++_bitcoin/installation_prefix
+$ make
+$ sudo make install
+```
+
 ## After installation
 After installation, you might need to add the installation path to your system's PATH environment variable to use the installed binaries.
 Make sure that every files are in the pkg-config directory (in this case, /Users/legacy/C++_bitcoin/installation_prefix/lib/pkgconfig).
