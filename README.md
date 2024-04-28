@@ -1,10 +1,10 @@
 # Installation of libbitcoin packages
 Installation of libbitcoin on macOS. Make sure that homebrew is installed and updated.
 ```bash
-sudo apt-get update
-sudo apt-get install build-essential autoconf automake libtool pkg-config git
-brew --version
-brew list
+$ sudo apt-get update
+$sudo apt-get install build-essential autoconf automake libtool pkg-config git
+$brew --version
+$brew list
 ```
 
 ## Installing libbitcoin-system
