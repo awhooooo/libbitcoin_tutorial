@@ -1,3 +1,10 @@
+// => Use command "brew list" and check whether gmp and pkg-config is installed
+// => assuming libbitcoin is installed with command "./install.sh --prefix=/home/me/myprefix --build-boost --disable-shared"
+//    compile this cpp file with command "g++ -std=c++17 -o Legacy Legacy.cpp \
+//    -I/home/me/myprefix/include -I/opt/homebrew/Cellar/openssl@3/3.2.1/include \
+//    $(pkg-config --cflags --libs libbitcoin-system libbitcoin-protocol libbitcoin-client libsecp256k1 gmp) \
+//    -L/home/me/myprefix/lib -L/opt/homebrew/Cellar/openssl@3/3.2.1/lib -lcrypto -Wno-deprecated"
+
 #include <bitcoin/system.hpp>
 
 using namespace libbitcoin;
