@@ -1,5 +1,7 @@
 # Installation of libbitcoin packages
 Installation of libbitcoin on macOS. Make sure that homebrew is installed and updated.
+Make sure you install the below packages in order. Packages mentioned below depends on the ones in above.
+
 ```bash
 $ sudo apt-get update
 $ sudo apt-get install build-essential autoconf automake libtool pkg-config git
@@ -49,8 +51,22 @@ $ sudo make install
 ## Installing libbitcoin-network
 ```bash
 $ cd /Users/legacy/C++_bitcoin/build-libbitcoin-network
-$ git clone https://github.com/libbitcoin/libbitcoin-netwokr.git
+$ git clone https://github.com/libbitcoin/libbitcoin-network.git
 $ cd libbitcoin-network
+$ git branch --all
+$ git checkout remotes/origin/version3
+$ git checkout -b version3
+$ ./autogen.sh
+$ ./configure --with-boost=/Users/legacy/C++_bitcoin/installation_prefix/include --with-boost-libdir=/Users/legacy/C++_bitcoin/installation_prefix/lib LDFLAGS="-L/Users/legacy/C++_bitcoin/installation_prefix/lib" CPPFLAGS="-I/Users/legacy/C++_bitcoin/installation_prefix/include" --prefix=/Users/legacy/C++_bitcoin/installation_prefix
+$ make
+$ sudo make install
+```
+
+## Installing libbitcoin-explorer
+```bash
+$ cd /Users/legacy/C++_bitcoin/build-libbitcoin-explorer
+$ git clone https://github.com/libbitcoin/libbitcoin-explorer.git
+$ cd libbitcoin-explorer
 $ git branch --all
 $ git checkout remotes/origin/version3
 $ git checkout -b version3
