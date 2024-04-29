@@ -1,6 +1,6 @@
 # Installation of libbitcoin packages
 Installation of libbitcoin on macOS. Make sure that homebrew is installed and updated.
-Make sure you install the below packages in order. Packages mentioned below depends on the ones in above.
+Also make sure you install the packages in order shown below.
 
 ```bash
 $ sudo apt-get update
