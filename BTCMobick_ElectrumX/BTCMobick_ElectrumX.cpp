@@ -177,6 +177,8 @@ namespace ELECTRUMX
         throw ElectrumX_Error("Unexpected response structure", response_data);
     }
 
+    // latest libbitcoin release version (version 3) doesn't support witness addresses (i.e native segwit and taproot addresses)
+    // the derivation of scripthash for witness addresses rely on bech32.h and segwit_addr.h files (written by Pieter Wuille)
     std::string ElectrumX::address_to_electrum_scripthash(const std::string& address)
     {
         std::string electrum_scriptHash;
