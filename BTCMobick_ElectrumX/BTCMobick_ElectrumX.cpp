@@ -1,8 +1,8 @@
 #include <bitcoin/system.hpp>
 #include <exception>
 #include <future>
-#include "bech32.h"
-#include "segwit_addr.h"
+#include "bech32/bech32.h"
+#include "bech32/segwit_addr.h"
 #include "BTCMobick_ElectrumX.hpp"
 #include <cassert>
 
