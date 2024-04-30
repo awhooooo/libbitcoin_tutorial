@@ -1,7 +1,7 @@
 # Installation of libbitcoin packages (version 3)
 Installation of libbitcoin on macOS. Make sure that homebrew is installed and updated.
 Also make sure you install the packages in order shown below. 
-As of this writing (May 1st, 2024), the master branch of the libbitcoin is not ready to be used yet.
+As of this writing (May 1st, 2024), the master branch of the libbitcoin is not ready for use yet.
 
 ```bash
 $ sudo apt-get update
