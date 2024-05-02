@@ -20,8 +20,8 @@ std::string P2SH_P2WPKH(void)
     wallet::payment_address from_address1("3BCs2cczEkumrucjSdAT6RF6ozEzjp4tTP");
     wallet::payment_address to_address1("16vnUfDxdMWYKYpw4gCqkwCHRy7jtzgJgn");
 
-   script script_code1 = script().to_pay_key_hash_pattern(keyHash1);
-   script witness_script1 = script({operation(opcode(0)), operation(to_chunk(keyHash1))});
+    script script_code1 = script().to_pay_key_hash_pattern(keyHash1);
+    script witness_script1 = script({operation(opcode(0)), operation(to_chunk(keyHash1))});
 	
     hash_digest prev_txid1;
     decode_hash(prev_txid1, "0188044a1e8fc492316281f44cb91a43ee279df4b830213fba77374fa92b539b");
