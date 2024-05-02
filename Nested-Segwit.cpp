@@ -80,3 +80,13 @@ int main()
 	
     return 0;
 }
+
+// compile command
+// g++ -std=c++17 -o Nested-Segwit Nested-Segwit.cpp BTCMobick_ElectrumX/BTCMobick_ElectrumX.cpp bech32/bech32.cpp bech32/segwit_addr.cpp \
+// -I/Users/legacy/C++_bitcoin/installation_prefix/include \
+// -I/opt/homebrew/Cellar/openssl@3/3.2.1/include \
+// -I/opt/homebrew/Cellar/nlohmann-json/3.11.3/include \
+// $(pkg-config --cflags --libs libbitcoin-system libbitcoin-client libbitcoin-network libbitcoin-protocol libsecp256k1 gmp) \
+// -L/Users/legacy/C++_bitcoin/installation_prefix/lib \
+// -L/opt/homebrew/Cellar/openssl@3/3.2.1/lib \
+// -lcrypto -Wno-deprecated
