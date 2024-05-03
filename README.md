@@ -11,7 +11,7 @@ $ brew list
 ```
 
 ## Installing libbitcoin-system
-Seems like boost version 1.84 is incompatible with libbitcoin version 3 so --build-boost option was included.
+Seems like boost version 1.84 is incompatible with libbitcoin version 3 so --build-boost option was included. (boost version 1.73 will be installed along with libbitcoin-system on the installation prefix path)
 Also, the prefix is set to a certain directory but you can change whatever you want.
 ```bash
 $ sudo apt-get install build-essential autoconf automake libtool pkg-config git
