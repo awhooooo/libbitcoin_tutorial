@@ -1,8 +1,8 @@
 #include <bitcoin/system.hpp>
 #include <exception>
 #include <future>
-#include "bech32/bech32.h"
-#include "bech32/segwit_addr.h"
+#include "../bech32/bech32.h"
+#include "../bech32/segwit_addr.h"
 #include "BTCMobick_ElectrumX.hpp"
 #include <cassert>
 
@@ -156,7 +156,6 @@ namespace ELECTRUMX
         //     }
         // }
 
-        // Since this is an async operation, we need to run the io_context
         // Since this is an async operation, we need to run the io_context
         this->electrum_io_context.reset();
         this->electrum_io_context.run();
