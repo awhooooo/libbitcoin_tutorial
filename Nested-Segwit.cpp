@@ -72,11 +72,11 @@ std::string P2SH_P2WPKH(void)
 
 std::string P2SH_custom()
 {
-	wallet::ec_private privateKey1("L2rBJ7KNsGtSfgyEGE3xoXQa4KNUoBB3FLRN4WbLawpRgqAHuVDA");
-	wallet::ec_public publicKey1 = privateKey1.to_public();
+    wallet::ec_private privateKey1("secret for obvious reason");
+    wallet::ec_public publicKey1 = privateKey1.to_public();
     data_chunk pubKey1 = to_chunk(publicKey1.point());
 
-	short_hash KeyHash1 = bitcoin_short_hash(pubKey1);
+    short_hash KeyHash1 = bitcoin_short_hash(pubKey1);
     data_chunk locktime;
     extend_data(locktime, to_little_endian<uint32_t>(1713352486));
 
@@ -89,23 +89,23 @@ std::string P2SH_custom()
     decode_hash(prev_txid1, "40a44e49011bde168cd4ea8eabd032bb1a99870ca3dae223fa92f9d5fa62dc33");
 
     uint32_t input_index1 = 0;
-	output_point vin1(prev_txid1, input_index1);
+    output_point vin1(prev_txid1, input_index1);
 
-	uint64_t input_value1;
-	decode_base10(input_value1, "0.01", 8);
+    uint64_t input_value1;
+    decode_base10(input_value1, "0.01", 8);
 
     //make Input
-	input input1 = input();
-	input1.set_previous_output(vin1);
-	input1.set_sequence(0xfffffffe);
-	script input_script1 = script::to_pay_script_hash_pattern(from_address1.hash());
+    input input1 = input();
+    input1.set_previous_output(vin1);
+    input1.set_sequence(0xfffffffe);
+    script input_script1 = script::to_pay_script_hash_pattern(from_address1.hash());
 
     uint64_t output_value1;
-	decode_base10(output_value1, "0.00999770", 8);
+    decode_base10(output_value1, "0.00999770", 8);
     script output_script1 = script().to_pay_key_hash_pattern(to_address1.hash());
-	output output1(output_value1, output_script1);
+    output output1(output_value1, output_script1);
 	
-	// Get current time as a time_point
+    // Get current time as a time_point
     auto now = std::chrono::system_clock::now();
     auto epoch = std::chrono::system_clock::to_time_t(now);
     auto unix_time = static_cast<uint32_t>(epoch);
@@ -113,31 +113,32 @@ std::string P2SH_custom()
     chain::transaction tx = chain::transaction();
     tx.set_version(2);
     tx.set_locktime(unix_time - 100000);
-	tx.inputs().push_back(input1);
-	tx.outputs().push_back(output1); 
+    tx.inputs().push_back(input1);
+    tx.outputs().push_back(output1); 
 
-	endorsement sig1; 
-	if (script::create_endorsement(sig1, privateKey1.secret(), redeem_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
-	{
-		std::cout << "Signature: " << std::endl;
-		std::cout << encode_base16(sig1) << "\n" << std::endl; 
-	}
+    endorsement sig1;
+    // make sure to set the script version "unversioned" in this non-witness transcation case
+    if (script::create_endorsement(sig1, privateKey1.secret(), redeem_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
+    {
+   	std::cout << "Signature: " << std::endl;
+	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+    }
 
-	assert(from_address1.hash() == bitcoin_short_hash(redeem_script.to_data(0)));
+    assert(from_address1.hash() == bitcoin_short_hash(redeem_script.to_data(0)));
 
-	operation::list scriptSig1; 
-	scriptSig1.push_back(operation(sig1));
-	scriptSig1.push_back(operation(pubKey1));
-	scriptSig1.push_back(operation(redeem_script.to_data(0)));
-	script unlockingScript1(scriptSig1);
-	std::cout << unlockingScript1.to_string(0) << "\n" << std:: endl;
+    operation::list scriptSig1; 
+    scriptSig1.push_back(operation(sig1));
+    scriptSig1.push_back(operation(pubKey1));
+    scriptSig1.push_back(operation(redeem_script.to_data(0)));
+    script unlockingScript1(scriptSig1);
+    std::cout << unlockingScript1.to_string(0) << "\n" << std:: endl;
 
     //Make Signed TX
-	tx.inputs()[0].set_script(unlockingScript1);
-	std::cout << "Raw Transaction: " << std::endl;
-	std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
+    tx.inputs()[0].set_script(unlockingScript1);
+    std::cout << "Raw Transaction: " << std::endl;
+    std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
 
-	return encode_base16(tx.to_data(true, true));
+    return encode_base16(tx.to_data(true, true));
 }
 
 
@@ -148,6 +149,9 @@ int main()
     
     std::string transaction1 = P2SH_P2WPKH();
     std::cout << BTCMOBICK_wallet_server.broadcast_transaction(transaction1) << std::endl;
+
+    std::string transaction2 = P2SH_custom();
+    std::cout << BTCMOBICK_wallet_server.broadcast_transaction(transaction2) << std::endl;
 	
     return 0;
 }
