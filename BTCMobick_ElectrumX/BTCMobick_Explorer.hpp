@@ -36,6 +36,7 @@ namespace EXPLORER_API
     {
         private:
             std::string base_url;
+            CURL *curl;
             static size_t WriteCallback(void *contents, size_t size, size_t nmemb, std::string *userp);
             nlohmann::json request_and_jsonize(const std::string& url);
 
