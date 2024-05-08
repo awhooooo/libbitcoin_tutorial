@@ -32,14 +32,6 @@ namespace ELECTRUMX
     }
 
 
-    // ElectrumX::ElectrumX()
-    // {
-    //     boost::asio::io_context electrum_io_context;
-    //     this->socket = boost::asio::ip::tcp::socket(this->electrum_io_context);
-    //     this->endpoint = boost::asio::ip::tcp::endpoint(boost::asio::ip::make_address("220.85.71.15"), 40008);
-    //     this->id = 0; 
-    // }
-
     ElectrumX::ElectrumX(boost::asio::io_context& io_context, const std::string& host, int port)
     : electrum_io_context(io_context), resolver(io_context), socket(io_context), id(0), is_connected(false)
     {
@@ -125,7 +117,6 @@ namespace ELECTRUMX
         // Convert the JSON object to a string
         std::string request = j.dump() + "\n";
         boost::asio::write(socket, boost::asio::buffer(request));
-        // std::cout << request << std::endl;
 
         boost::asio::streambuf response_buffer;
         boost::system::error_code error;
@@ -145,17 +136,6 @@ namespace ELECTRUMX
             }
         });
 
-        // while (true) {
-        //     boost::asio::async_read(socket, response_buffer, boost::asio::transfer_at_least(1), error);
-        //     if (error) break;  // Exit loop on error or EOF
-
-        //     std::istream response_stream(&response_buffer);
-        //     std::string response_part;
-        //     while (std::getline(response_stream, response_part)) {
-        //         response_data += response_part;
-        //     }
-        // }
-
         // Since this is an async operation, we need to run the io_context
         this->electrum_io_context.reset();
         this->electrum_io_context.run();
@@ -174,39 +154,6 @@ namespace ELECTRUMX
         }
 
         throw ElectrumX_Error("Unexpected response structure", response_data);
-    }
-
-    // latest libbitcoin release version (version 3) doesn't support witness addresses (i.e native segwit and taproot addresses)
-    // the derivation of scripthash for witness addresses rely on bech32.h and segwit_addr.h files (written by Pieter Wuille)
-    std::string ElectrumX::address_to_electrum_scripthash(const std::string& address)
-    {
-        std::string electrum_scriptHash;
-        script scriptPubKey;
-
-        std::pair<int, std::vector<uint8_t> > decoded_result = segwit_addr::decode("bc", address);
-        data_chunk witness_program = decoded_result.second;
-
-        if (decoded_result.first == 0) {
-            scriptPubKey = script({operation(opcode(0)), operation(witness_program)});
-        }
-        else if (decoded_result.first == 1) {
-            scriptPubKey = script({operation(opcode(81)), operation(witness_program)});
-        }
-        else if (decoded_result.first == -1) {
-            wallet::payment_address bitcoin_address(address);
-            if (bitcoin_address.version() == wallet::payment_address::mainnet_p2kh) {
-                scriptPubKey = script().to_pay_key_hash_pattern(bitcoin_address.hash());
-            }
-            else if (bitcoin_address.version() == wallet::payment_address::mainnet_p2sh) {
-                scriptPubKey = script().to_pay_script_hash_pattern(bitcoin_address.hash());
-            }
-        }
-
-        hash_digest scriptHash = sha256_hash(scriptPubKey.to_data(0));
-        std::reverse(scriptHash.begin(), scriptHash.end());
-        electrum_scriptHash = encode_base16(scriptHash);
-
-        return electrum_scriptHash;
     }
 
     nlohmann::json ElectrumX::block_header(const uint64_t height, const uint64_t cp_height)
@@ -313,6 +260,43 @@ namespace ELECTRUMX
     nlohmann::json ElectrumX::server_version(const std::string& client_name, const std::string& protocol_version)
     {
         return ElectrumX::send_requests_receive(ElectrumX::methodName(ElectrumX::electrum_server_version), {client_name, protocol_version});
+    }
+
+    // latest libbitcoin release version (version 3) doesn't support witness addresses (i.e native segwit and taproot addresses)
+    // the derivation of scripthash for witness addresses rely on bech32.h and segwit_addr.h files (written by Pieter Wuille)
+    std::string ElectrumX::address_to_electrum_scripthash(const std::string& address)
+    {
+        std::string electrum_scriptHash;
+        script scriptPubKey;
+
+        std::pair<int, std::vector<uint8_t> > decoded_result = segwit_addr::decode("bc", address);
+        data_chunk witness_program = decoded_result.second;
+
+        if (decoded_result.first == 0) {
+            // p2wpkh and p2wsh addresses (Native Segwit, witness v0)
+            scriptPubKey = script({operation(opcode(0)), operation(witness_program)});
+        }
+        else if (decoded_result.first == 1) {
+            // p2tr addresses (Taproot, witness v1)
+            scriptPubKey = script({operation(opcode(81)), operation(witness_program)});
+        }
+        else if (decoded_result.first == -1) {
+            wallet::payment_address bitcoin_address(address);
+            if (bitcoin_address.version() == wallet::payment_address::mainnet_p2kh) {
+                // p2pkh addresses (Legacy)
+                scriptPubKey = script().to_pay_key_hash_pattern(bitcoin_address.hash());
+            }
+            else if (bitcoin_address.version() == wallet::payment_address::mainnet_p2sh) {
+                // p2sh addresses (Nested Segwit)
+                scriptPubKey = script().to_pay_script_hash_pattern(bitcoin_address.hash());
+            }
+        }
+
+        hash_digest scriptHash = sha256_hash(scriptPubKey.to_data(0));
+        std::reverse(scriptHash.begin(), scriptHash.end());
+        electrum_scriptHash = encode_base16(scriptHash);
+
+        return electrum_scriptHash;
     }
 
     nlohmann::json ElectrumX::deserialize_headers(const nlohmann::json& headers)
