@@ -50,7 +50,6 @@ namespace ELECTRUMX
             void connect();
             void disconnect();
             nlohmann::json send_requests_receive(const std::string& method, const std::vector< std::variant<std::string, uint64_t, bool> >& params);
-            std::string address_to_electrum_scripthash(const std::string& address);
 
             nlohmann::json block_header(const uint64_t height, const uint64_t cp_height = 0);
             nlohmann::json block_headers(const uint64_t start_height, const uint64_t count, const uint64_t cp_height);
@@ -73,6 +72,7 @@ namespace ELECTRUMX
             nlohmann::json server_ping();
             nlohmann::json server_version(const std::string& client_name = "", const std::string& protocol_version = "1.4");
 
+            std::string address_to_electrum_scripthash(const std::string& address);
             static nlohmann::json deserialize_headers(const nlohmann::json& headers);
 
             enum methods
