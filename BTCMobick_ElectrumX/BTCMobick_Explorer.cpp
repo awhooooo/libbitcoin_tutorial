@@ -22,11 +22,12 @@ namespace EXPLORER_API
     Explorer_API::Explorer_API()
     {
         this->base_url = "http://blockchain.mobick.info";
+        this->curl = curl_easy_init();
     }
 
     Explorer_API::~Explorer_API()
     {
-
+        curl_easy_cleanup(this->curl);
     }
 
     size_t Explorer_API::WriteCallback(void *contents, size_t size, size_t nmemb, std::string *userp) {
@@ -35,17 +36,17 @@ namespace EXPLORER_API
     }
 
     nlohmann::json Explorer_API::request_and_jsonize(const std::string& url) {
-        CURL *curl;
+        // CURL *curl;
         CURLcode res;
         std::string readBuffer;
 
-        curl = curl_easy_init();
-        if(curl) {
-            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-            res = curl_easy_perform(curl);
-            curl_easy_cleanup(curl);
+        // this->curl = curl_easy_init();
+        if(this->curl) {
+            curl_easy_setopt(this->curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(this->curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(this->curl, CURLOPT_WRITEDATA, &readBuffer);
+            res = curl_easy_perform(this->curl);
+            // curl_easy_cleanup(this->curl);
 
             if(res != CURLE_OK)
                 fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
