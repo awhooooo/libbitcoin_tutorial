@@ -63,20 +63,20 @@ int main()
     decode_hash(prev_txid1, "testnet bitcoin transaction id");
 
     uint32_t input_index1 = 0;
-	  output_point vin1(prev_txid1, input_index1);
+	output_point vin1(prev_txid1, input_index1);
 
     uint64_t input_value1;
-	  decode_base10(input_value1, "0.00099620", 8);
+    decode_base10(input_value1, "0.00099620", 8);
 
     //make Input
-  	input input1 = input();
-  	input1.set_previous_output(vin1);
-  	input1.set_sequence(0xfffffffe);
+    input input1 = input();
+    input1.set_previous_output(vin1);
+    input1.set_sequence(0xfffffffe);
 
     uint64_t output_value1;
-	  decode_base10(output_value1, "0.00095000", 8);
+    decode_base10(output_value1, "0.00095000", 8);
     script output_script1 = script().to_pay_key_hash_pattern(addressB_1.hash());
-	  output output1(output_value1, output_script1);
+    output output1(output_value1, output_script1);
 
     chain::transaction tx1 = chain::transaction();
     tx1.set_version(2);
@@ -85,7 +85,7 @@ int main()
   	tx1.outputs().push_back(output1); 
 
     endorsement sig1; 
-	  script::create_endorsement(sig1, privateKeyB.secret(), redeem_scriptA, tx1, 0u, sighash_algorithm::all, script_version::unversioned, input_value1);
+	script::create_endorsement(sig1, privateKeyB.secret(), redeem_scriptA, tx1, 0u, sighash_algorithm::all, script_version::unversioned, input_value1);
 
     std::string text1("paranoid");
     data_chunk secret_password1(text1.begin(), text1.end());
@@ -111,10 +111,10 @@ int main()
     decode_hash(prev_txid2, "mainnet bitcoin transaction id");
 
     uint32_t input_index2 = 0;
-	  output_point vin2(prev_txid2, input_index2);
+	output_point vin2(prev_txid2, input_index2);
 
     uint64_t input_value2;
-	  decode_base10(input_value2, "0.001", 8);
+	decode_base10(input_value2, "0.001", 8);
 
     //make Input
   	input input2 = input();
@@ -122,9 +122,9 @@ int main()
   	input2.set_sequence(0xfffffffe);
 
     uint64_t output_value2;
-	  decode_base10(output_value2, "0.00099600", 8);
+	decode_base10(output_value2, "0.00099600", 8);
     script output_script2 = script().to_pay_key_hash_pattern(addressA_1.hash());
-	  output output2(output_value2, output_script2);
+	output output2(output_value2, output_script2);
 
     chain::transaction tx2 = chain::transaction();
     tx2.set_version(2);
@@ -133,7 +133,7 @@ int main()
   	tx2.outputs().push_back(output2); 
 
     endorsement sig2; 
-	  script::create_endorsement(sig2, privateKeyA.secret(), redeem_scriptB, tx2, 0u, sighash_algorithm::all, script_version::unversioned, input_value2);
+	script::create_endorsement(sig2, privateKeyA.secret(), redeem_scriptB, tx2, 0u, sighash_algorithm::all, script_version::unversioned, input_value2);
 	
     std::string text2("paranoid");
     data_chunk secret_password2(text2.begin(), text2.end());
@@ -159,10 +159,10 @@ int main()
     decode_hash(prev_txid3, "testnet bitcoin transaction id");
 
     uint32_t input_index3 = 0;
-	  output_point vin3(prev_txid3, input_index3);
+	output_point vin3(prev_txid3, input_index3);
 
     uint64_t input_value3;
-	  decode_base10(input_value3, "0.00099620", 8);
+	decode_base10(input_value3, "0.00099620", 8);
 
     //make Input
   	input input3 = input();
@@ -170,9 +170,9 @@ int main()
   	input3.set_sequence(0xfffffffe);
 
     uint64_t output_value3;
-	  decode_base10(output_value3, "0.00093000", 8);
+	decode_base10(output_value3, "0.00093000", 8);
     script output_script3 = script().to_pay_key_hash_pattern(addressA_1.hash());
-	  output output3(output_value3, output_script3);
+	output output3(output_value3, output_script3);
 
     // Get current time as a time_point
     auto now = std::chrono::system_clock::now();
@@ -186,7 +186,7 @@ int main()
   	tx3.outputs().push_back(output3); 
 
     endorsement sig3; 
-	  script::create_endorsement(sig3, privateKeyA.secret(), redeem_scriptA, tx3, 0u, sighash_algorithm::all, script_version::unversioned, input_value3);
+	script::create_endorsement(sig3, privateKeyA.secret(), redeem_scriptA, tx3, 0u, sighash_algorithm::all, script_version::unversioned, input_value3);
 
     operation::list scriptSig3;
   	scriptSig3.push_back(operation(sig3));
@@ -208,10 +208,10 @@ int main()
     decode_hash(prev_txid4, "mainnet bitcoin transaction id");
 
     uint32_t input_index4 = 0;
-	  output_point vin4(prev_txid4, input_index4);
+	output_point vin4(prev_txid4, input_index4);
 
     uint64_t input_value4;
-	  decode_base10(input_value4, "0.001", 8);
+	decode_base10(input_value4, "0.001", 8);
 
     //make Input
   	input input4 = input();
@@ -219,9 +219,9 @@ int main()
   	input4.set_sequence(0xfffffffe);
 
     uint64_t output_value4;
-	  decode_base10(output_value4, "0.00099600", 8);
+	decode_base10(output_value4, "0.00099600", 8);
     script output_script4 = script().to_pay_key_hash_pattern(addressB_1.hash());
-	  output output4(output_value4, output_script4);
+	output output4(output_value4, output_script4);
 
     chain::transaction tx4 = chain::transaction();
     tx4.set_version(2);
@@ -230,7 +230,7 @@ int main()
   	tx4.outputs().push_back(output4); 
 
     endorsement sig4; 
-	  script::create_endorsement(sig4, privateKeyB.secret(), redeem_scriptB, tx4, 0u, sighash_algorithm::all, script_version::unversioned, input_value4);
+	script::create_endorsement(sig4, privateKeyB.secret(), redeem_scriptB, tx4, 0u, sighash_algorithm::all, script_version::unversioned, input_value4);
 	
     operation::list scriptSig4; 
   	scriptSig4.push_back(operation(sig4));
