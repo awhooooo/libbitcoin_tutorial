@@ -63,13 +63,13 @@ int main()
     decode_hash(prev_txid1, "testnet bitcoin transaction id");
 
     uint32_t input_index1 = 0;
-	output_point vin1(prev_txid1, input_index1);
+    output_point vin1(prev_txid1, input_index1);
 
     uint64_t input_value1;
-	decode_base10(input_value1, "0.00099620", 8);
+    decode_base10(input_value1, "0.00099620", 8);
 
     //make Input
-	input input1 = input();
+    input input1 = input();
 	input1.set_previous_output(vin1);
 	input1.set_sequence(0xfffffffe);
 
