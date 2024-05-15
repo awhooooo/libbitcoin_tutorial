@@ -270,24 +270,25 @@ namespace ELECTRUMX
         script scriptPubKey;
 
         std::pair<int, std::vector<uint8_t> > decoded_result = segwit_addr::decode("bc", address);
+        int witness_version = decoded_result.first;  // Native Segwit => (0) Taproot => (1) Decode Failed => (-1)
         data_chunk witness_program = decoded_result.second;
 
-        if (decoded_result.first == 0) {
-            // p2wpkh and p2wsh addresses (Native Segwit, witness v0)
+        if (witness_version == 0) {
+            // P2WPKH or P2WSH address
             scriptPubKey = script({operation(opcode(0)), operation(witness_program)});
         }
-        else if (decoded_result.first == 1) {
-            // p2tr addresses (Taproot, witness v1)
+        else if (witness_version == 1) {
+            // P2TR address
             scriptPubKey = script({operation(opcode(81)), operation(witness_program)});
         }
-        else if (decoded_result.first == -1) {
+        else if (witness_version == -1) {
             wallet::payment_address bitcoin_address(address);
             if (bitcoin_address.version() == wallet::payment_address::mainnet_p2kh) {
-                // p2pkh addresses (Legacy)
+                // Legacy address
                 scriptPubKey = script().to_pay_key_hash_pattern(bitcoin_address.hash());
             }
             else if (bitcoin_address.version() == wallet::payment_address::mainnet_p2sh) {
-                // p2sh addresses (Nested Segwit)
+                // P2SH address
                 scriptPubKey = script().to_pay_script_hash_pattern(bitcoin_address.hash());
             }
         }
