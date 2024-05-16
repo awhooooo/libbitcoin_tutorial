@@ -71,17 +71,17 @@ int main()
 	tx.outputs().push_back(output2); 
 	
 	endorsement sig1; 
-	if(input_script1.create_endorsement(sig1, privateKey1.secret(), input_script1, tx, 0u, all))
+	if (input_script1.create_endorsement(sig1, privateKey1.secret(), input_script1, tx, 0u, all))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig1) << "\n" << std::endl; 
 	}
 	
 	endorsement sig2; 
-	if(input_script2.create_endorsement(sig2, privateKey1.secret(), input_script2, tx, 1u, all))
+	if (input_script2.create_endorsement(sig2, privateKey1.secret(), input_script2, tx, 1u, all))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig2) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig2) << "\n" << std::endl; 
 	}
 	
 	//make Sig Script
