@@ -52,8 +52,8 @@ std::string P2WSH(void)
 	endorsement sig1; 
 	if (witness_script.create_endorsement(sig1, privateKey1.secret(), witness_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig1) << "\n" << std::endl; 
 	}
 	
 	//make Sig Script
@@ -114,8 +114,8 @@ std::string P2WPKH(void)
 	// script::create_endorsement(sig1, privateKey1.secret(), p2wpkh_script_code, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000);
 	if (witness_script.create_endorsement(sig1, privateKey1.secret(), p2wpkh_script_code, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig1) << "\n" << std::endl; 
 	}
 	
 	//make Sig Script
