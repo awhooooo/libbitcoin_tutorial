@@ -48,8 +48,8 @@ std::string P2SH_P2WPKH(void)
 	endorsement sig1; 
 	if (script::create_endorsement(sig1, privateKey1.secret(), script_code1, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig1) << "\n" << std::endl; 
 	}
 
 	// make witness
@@ -120,8 +120,8 @@ std::string P2SH_custom()
 	// make sure to set the script version "unversioned" in this non-witness transcation case
 	if (script::create_endorsement(sig1, privateKey1.secret(), redeem_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
 	{
-	std::cout << "Signature: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+		std::cout << "Signature: " << std::endl;
+		std::cout << encode_base16(sig1) << "\n" << std::endl; 
 	}
 	
 	assert(from_address1.hash() == bitcoin_short_hash(redeem_script.to_data(0)));
