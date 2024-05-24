@@ -116,7 +116,14 @@ namespace ELECTRUMX
 
         // Convert the JSON object to a string
         std::string request = j.dump() + "\n";
-        boost::asio::write(socket, boost::asio::buffer(request));
+        boost::asio::async_write(socket, boost::asio::buffer(request), 
+        [this](const boost::system::error_code& ec, std::size_t bytes_transferred) {
+            if (!ec) {
+                ; // pass
+            } else {
+                std::cerr << "Error writing: " << ec.message() << std::endl;
+            }
+        });
 
         boost::asio::streambuf response_buffer;
         boost::system::error_code error;
