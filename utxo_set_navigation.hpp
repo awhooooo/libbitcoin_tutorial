@@ -1,3 +1,5 @@
+// C++ implementation of https://github.com/eklitzke/utxodump
+
 #include <iostream>
 #include <fstream>
 #include <vector>
