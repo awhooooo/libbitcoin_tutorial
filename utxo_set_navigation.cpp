@@ -1,3 +1,5 @@
+// C++ implementation of https://github.com/eklitzke/utxodump
+
 #include "utxo_set_navigation.hpp"
 
 // #include <spdlog/spdlog.h>
