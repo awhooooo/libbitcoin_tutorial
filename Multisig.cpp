@@ -84,66 +84,65 @@ std::string P2SH_multisig_spend(void)
     decode_hash(prev_txid1, "db0b27dac0dd2f27339b08e3c68317dec30ae80f8a9e78d4d7659e53b07919c4");
 
     uint32_t input_index1 = 1;
-	  output_point vin1(prev_txid1, input_index1);
+    output_point vin1(prev_txid1, input_index1);
 
     uint64_t input_value1;
-	  decode_base10(input_value1, "0.01", 8);
+    decode_base10(input_value1, "0.01", 8);
 
     //make Input
-	  input input1 = input();
-	  input1.set_previous_output(vin1);
-	  input1.set_sequence(0xffffffff);
-	  script input_script1 = script::to_pay_script_hash_pattern(from_address.hash());
+    input input1 = input();
+    input1.set_previous_output(vin1);
+    input1.set_sequence(0xffffffff);
+    script input_script1 = script::to_pay_script_hash_pattern(from_address.hash());
 
     uint64_t output_value1;
-	  decode_base10(output_value1, "0.00999600", 8);
+    decode_base10(output_value1, "0.00999600", 8);
     script output_script1 = script().to_pay_key_hash_pattern(to_address.hash());
-	  output output1(output_value1, output_script1);
+    output output1(output_value1, output_script1);
 
     chain::transaction tx = chain::transaction();
     tx.set_version(2);
     tx.set_locktime(0);
-  	tx.inputs().push_back(input1);
-  	tx.outputs().push_back(output1);
+    tx.inputs().push_back(input1);
+    tx.outputs().push_back(output1);
 
     /** signature types are SigVersion::BASE */
     endorsement sig1; 
-  	if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
-  	{
-  		std::cout << "Signature #1: " << std::endl;
-  		std::cout << encode_base16(sig1) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
+    {
+	std::cout << "Signature #1: " << std::endl;
+	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+    } 
   
     endorsement sig2; 
-  	if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
-  	{
-  		std::cout << "Signature #2: " << std::endl;
-  		std::cout << encode_base16(sig2) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
+    {
+  	std::cout << "Signature #2: " << std::endl;
+  	std::cout << encode_base16(sig2) << "\n" << std::endl; 
+    }
   
     endorsement sig3; 
-  	if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
-  	{
-  		std::cout << "Signature #3: " << std::endl;
-  		std::cout << encode_base16(sig3) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
+    {
+  	std::cout << "Signature #3: " << std::endl;
+  	std::cout << encode_base16(sig3) << "\n" << std::endl; 
+    }
 
     operation::list scriptSig1;
     scriptSig1.reserve(4);
     data_chunk empty_sig;
-  	scriptSig1.push_back(operation(empty_sig)); // 1st private key won't be needed
-  	scriptSig1.push_back(operation(sig2)); 
+    scriptSig1.push_back(operation(empty_sig)); // 1st private key won't be needed
+    scriptSig1.push_back(operation(sig2)); 
     scriptSig1.push_back(operation(sig3));
-	  scriptSig1.push_back(operation(multisig_script.to_data(0)));
+    scriptSig1.push_back(operation(multisig_script.to_data(0)));
     script unlockingScript1(scriptSig1);
 	
     //Make Signed TX
-  	tx.inputs()[0].set_script(unlockingScript1);
-  	std::cout << "Raw Transaction: " << std::endl;
-  	std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
+    tx.inputs()[0].set_script(unlockingScript1);
+    std::cout << "Raw Transaction: " << std::endl;
+    std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
   
-  	return encode_base16(tx.to_data(true, true));
-	
+    return encode_base16(tx.to_data(true, true));
 }
 
 std::string P2WSH_multisig_spend(void)
@@ -162,64 +161,64 @@ std::string P2WSH_multisig_spend(void)
     decode_hash(prev_txid1, "db0b27dac0dd2f27339b08e3c68317dec30ae80f8a9e78d4d7659e53b07919c4");
 
     uint32_t input_index1 = 0;
-	  output_point vin1(prev_txid1, input_index1);
+    output_point vin1(prev_txid1, input_index1);
 
     uint64_t input_value1;
-	  decode_base10(input_value1, "0.01", 8);
+    decode_base10(input_value1, "0.01", 8);
 
     //make Input
-  	input input1 = input();
-  	input1.set_previous_output(vin1);
-  	input1.set_sequence(0xfffffffe);
+    input input1 = input();
+    input1.set_previous_output(vin1);
+    input1.set_sequence(0xfffffffe);
 
     uint64_t output_value1;
-	  decode_base10(output_value1, "0.00999600", 8);
+    decode_base10(output_value1, "0.00999600", 8);
     script output_script1 = script().to_pay_key_hash_pattern(to_address.hash());
-	  output output1(output_value1, output_script1);
+    output output1(output_value1, output_script1);
 
     chain::transaction tx = chain::transaction();
     tx.set_version(2);
     tx.set_locktime(0);
-  	tx.inputs().push_back(input1);
-  	tx.outputs().push_back(output1); 
+    tx.inputs().push_back(input1);
+    tx.outputs().push_back(output1); 
 
     /** signature types are SigVersion::WITNESS_VO */
     endorsement sig1; 
-  	if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
-  	{
-  		std::cout << "Signature #1: " << std::endl;
-  		std::cout << encode_base16(sig1) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
+    {
+  	std::cout << "Signature #1: " << std::endl;
+  	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+    }
 
     endorsement sig2; 
-  	if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
-  	{
-  		std::cout << "Signature #2: " << std::endl;
-  		std::cout << encode_base16(sig2) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
+    {
+  	std::cout << "Signature #2: " << std::endl;
+  	std::cout << encode_base16(sig2) << "\n" << std::endl; 
+    }
 
     endorsement sig3; 
-  	if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
-  	{
-  		std::cout << "Signature #3: " << std::endl;
-  		std::cout << encode_base16(sig3) << "\n" << std::endl; 
-  	}
+    if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
+    {
+  	std::cout << "Signature #3: " << std::endl;
+  	std::cout << encode_base16(sig3) << "\n" << std::endl; 
+    }
 
     //make witness data
-	  data_stack witness1;
+    data_stack witness1;
     witness1.reserve(4);
     data_chunk empty_sig;
     witness1.push_back(empty_sig); // 1st private key won't be needed
-  	witness1.push_back(to_chunk(sig2));
-  	witness1.push_back(to_chunk(sig3));
+    witness1.push_back(to_chunk(sig2));
+    witness1.push_back(to_chunk(sig3));
     witness1.push_back(to_chunk(multisig_script.to_data(0)));
-	  witness txinwitness1(witness1);
+    witness txinwitness1(witness1);
 	
     // Make Signed TX
-	  tx.inputs()[0].set_witness(txinwitness1);
+    tx.inputs()[0].set_witness(txinwitness1);
     std::cout << "Raw Transaction: " << std::endl;
 
-	  std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
+    std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
 
     return encode_base16(tx.to_data(true, true));
 
