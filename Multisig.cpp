@@ -131,8 +131,9 @@ std::string P2SH_multisig_spend(void)
     operation::list scriptSig1;
     scriptSig1.reserve(4);
     data_chunk empty_sig;
-    scriptSig1.push_back(operation(empty_sig)); // 1st private key won't be needed
-    scriptSig1.push_back(operation(sig2)); 
+    scriptSig1.push_back(operation(empty_sig)); 
+    scriptSig1.push_back(operation(sig1)); 
+    // 2nd private key won't be needed
     scriptSig1.push_back(operation(sig3));
     scriptSig1.push_back(operation(multisig_script.to_data(0)));
     script unlockingScript1(scriptSig1);
