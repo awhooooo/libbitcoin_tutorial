@@ -32,13 +32,13 @@ std::string P2SH_multisig(int m = 2, int n = 3)
         ec_secret secretKey = bitcoin_hash(seed);
 
         std::string hexKey = encode_base16(secretKey);
-        std::cout << "secret key " << i << ": " << hexKey << std::endl;
+        std::cout << "secret key " << i << ": " << hexKey << "\n";
 
         wallet::ec_private privateKey(secretKey);
-        std::cout << "Private key " << i << ": " << privateKey.encoded() << std::endl;
+        std::cout << "Private key " << i << ": " << privateKey.encoded() << "\n";
 
         wallet::ec_public publicKey = privateKey.to_public();
-        std::cout << "Compressed Public Key " << i << ": " << publicKey.encoded() << std::endl;
+        std::cout << "Compressed Public Key " << i << ": " << publicKey.encoded() << "\n";
 
         privkey.push_back(secretKey);
         pubkey.push_back(publicKey);
@@ -46,7 +46,7 @@ std::string P2SH_multisig(int m = 2, int n = 3)
 
     chain::script multiSig_script = chain::script(chain::script().to_pay_multisig_pattern(m, pubkey));
     std::cout << multiSig_script.to_string(0) << std::endl;
-    std::cout << wallet::payment_address(multiSig_script).encoded() << std::endl; // for testnet, add 0xc4
+    std::cout << wallet::payment_address(multiSig_script).encoded() << "\n"; // for testnet, add 0xc4
 
     return wallet::payment_address(multiSig_script).encoded();
 }
@@ -110,22 +110,22 @@ std::string P2SH_multisig_spend(void)
     endorsement sig1; 
     if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
     {
-	std::cout << "Signature #1: " << std::endl;
-	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+	std::cout << "Signature #1: \n";
+	std::cout << encode_base16(sig1) << "\n\n"; 
     } 
   
     endorsement sig2; 
     if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
     {
-  	std::cout << "Signature #2: " << std::endl;
-  	std::cout << encode_base16(sig2) << "\n" << std::endl; 
+  	std::cout << "Signature #2: \n";
+  	std::cout << encode_base16(sig2) << "\n\n"; 
     }
   
     endorsement sig3; 
     if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::unversioned, input_value1))
     {
-  	std::cout << "Signature #3: " << std::endl;
-  	std::cout << encode_base16(sig3) << "\n" << std::endl; 
+  	std::cout << "Signature #3: \n";
+  	std::cout << encode_base16(sig3) << "\n\n"; 
     }
 
     operation::list scriptSig1;
@@ -139,7 +139,7 @@ std::string P2SH_multisig_spend(void)
 	
     //Make Signed TX
     tx.inputs()[0].set_script(unlockingScript1);
-    std::cout << "Raw Transaction: " << std::endl;
+    std::cout << "Raw Transaction: \n";
     std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
   
     return encode_base16(tx.to_data(true, true));
@@ -186,22 +186,22 @@ std::string P2WSH_multisig_spend(void)
     endorsement sig1; 
     if (script::create_endorsement(sig1, privateKey1.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
     {
-  	std::cout << "Signature #1: " << std::endl;
-  	std::cout << encode_base16(sig1) << "\n" << std::endl; 
+  	std::cout << "Signature #1: \n";
+  	std::cout << encode_base16(sig1) << "\n\n"; 
     }
 
     endorsement sig2; 
     if (script::create_endorsement(sig2, privateKey2.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
     {
-  	std::cout << "Signature #2: " << std::endl;
-  	std::cout << encode_base16(sig2) << "\n" << std::endl; 
+  	std::cout << "Signature #2: \n";
+  	std::cout << encode_base16(sig2) << "\n\n"; 
     }
 
     endorsement sig3; 
     if (script::create_endorsement(sig3, privateKey3.secret(), multisig_script, tx, 0u, sighash_algorithm::all, script_version::zero, 1000000))
     {
-  	std::cout << "Signature #3: " << std::endl;
-  	std::cout << encode_base16(sig3) << "\n" << std::endl; 
+  	std::cout << "Signature #3: \n";
+  	std::cout << encode_base16(sig3) << "\n\n"; 
     }
 
     //make witness data
@@ -216,7 +216,7 @@ std::string P2WSH_multisig_spend(void)
 	
     // Make Signed TX
     tx.inputs()[0].set_witness(txinwitness1);
-    std::cout << "Raw Transaction: " << std::endl;
+    std::cout << "Raw Transaction: \n";
 
     std::cout << encode_base16(tx.to_data(true, true)) << std::endl;
 
