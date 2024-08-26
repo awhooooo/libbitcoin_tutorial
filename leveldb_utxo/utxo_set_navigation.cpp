@@ -2,7 +2,8 @@
 
 #include "utxo_set_navigation.hpp"
 
-// #include <spdlog/spdlog.h>
+#include <leveldb/cache.h>
+#include <spdlog/spdlog.h>
 
 // XOR decryption function
 void decrypt(std::vector<uint8_t>& data, const std::vector<uint8_t>& key) {
@@ -82,12 +83,13 @@ UTXO_DB_READER::~UTXO_DB_READER()
 void UTXO_DB_READER::Init()
 {
     this->options.create_if_missing = false;
+    this->options.block_cache = leveldb::NewLRUCache(64 * 1024 * 1024);
     leveldb::Status status = leveldb::DB::Open(this->options, this->db_path, &(this->pdb));
     if (!status.ok()) {
-        std::cerr << "Unable to open LevelDB database: " << status.ToString() << "\n;
+        spdlog::error("Unable to open LevelDB database: {}", status.ToString());
         return;
     }
-    std::cout << "Successfully opened LevelDB database: " << status.ToString() << "\n;
+    spdlog::info("Successfully opened LevelDB database: {}", status.ToString());
 }
 
 // Function to get the obfuscation key
@@ -147,10 +149,11 @@ uint64_t UTXO_DB_READER::process_batch_amount(std::vector<std::pair<std::string,
  */
 void UTXO_DB_READER::check()
 {
-    leveldb::Iterator* it = this->pdb->NewIterator(leveldb::ReadOptions());
     // Construct the starting key for the Seek operation
     std::string start_key = "C";
     start_key.push_back(static_cast<char>(0x00));
+
+    leveldb::Iterator* it = this->pdb->NewIterator(leveldb::ReadOptions());
     for (it->Seek(start_key); it->Valid() && it->key().ToString()[0] == 'C'; it->Next()) {
         std::string key = it->key().ToString();
         std::vector<uint8_t> value(it->value().data(), it->value().data() + it->value().size());
@@ -163,16 +166,16 @@ void UTXO_DB_READER::check()
         unsigned char second_byte = static_cast<unsigned char>(key[1]);  // Extract the second byte
 
         if (second_byte >= 0x00 && second_byte <= 0x3F) {
-            std::cout << "First Range => " << txid << " => " << height << "\n";
+            spdlog::info("First Range => {} => {}",  txid, height);
         }
         else if (second_byte >= 0x40 && second_byte <= 0x7F) {
-            std::cout << "Second Range => " << txid << " => " << height << "\n";
+            spdlog::info("Second Range => {} => {}",  txid, height);
         }
         else if (second_byte >= 0x80 && second_byte <= 0xBF) {
-            std::cout << "Third Range => " << txid << " => " << height << "\n";
+            spdlog::info("Third Range => {} => {}",  txid, height);
         }
         else if (second_byte >= 0xC0 && second_byte <= 0xFF) {
-            std::cout << "Fourth Range => " << txid << " => " << height << "\n";
+            spdlog::info("Fourth Range => {} => {}",  txid, height);
         }
     }
     return;
@@ -255,10 +258,10 @@ uint64_t UTXO_DB_READER::add_utxo_amount(const unsigned char start_byte, const u
     }
 
     if (!it->status().ok()) {
-        std::cerr << "An error occurred during iteration: " << it->status().ToString() << "\n;
+        spdlog::error("An error occurred during iteration: {}", it->status().ToString());
     }
 
     delete it; // Clean up the iterator
-    std::cout << "Total amount for range: " << total_amount << "\n;
+    spdlog::info("Total amount for range: {}", total_amount);
     return total_amount;
 }
