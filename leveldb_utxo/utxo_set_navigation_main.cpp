@@ -27,7 +27,7 @@ int main() {
 
     for (int i = 0; i < 4; i++) {
         // Use std::async to launch the task asynchronously
-        futures.emplace_back(std::async(std::launch::async, &UTXO_DB_READER::add_utxo_amount, &database, ranges[i].first, ranges[i].second, 43));
+        futures.emplace_back(std::async(std::launch::async, &UTXO_DB_READER::add_utxo_amount, &database, ranges[i].first, ranges[i].second, 556760));
     }
 
     // Aggregate results from all threads
