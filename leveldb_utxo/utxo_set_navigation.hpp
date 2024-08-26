@@ -16,7 +16,7 @@
 // Constants
 const uint8_t COIN = 67;
 const std::vector<uint8_t> OBFUSCATE_KEY = {0x0e, 0x00, 'o', 'b', 'f', 'u', 's', 'c', 'a', 't', 'e', '_', 'k', 'e', 'y'};
-const int BATCH_SIZE = 1000;
+const int BATCH_SIZE = 150000;
 
 class UTXO_DB_READER
 {
