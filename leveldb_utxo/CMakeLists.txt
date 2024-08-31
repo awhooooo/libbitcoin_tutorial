@@ -1,4 +1,4 @@
-# macOS Ventura
+#macOS Ventura
 cmake_minimum_required(VERSION 3.19)
 
 # Set the project name
@@ -11,11 +11,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Include directories
 include_directories(
     /opt/homebrew/Cellar/leveldb/1.22.0/include
+    /opt/homebrew/Cellar/spdlog/1.14.1/include
+    /opt/homebrew/Cellar/fmt/10.2.1_1/include
 )
 
 # Link directories
 link_directories(
     /opt/homebrew/Cellar/leveldb/1.22.0/lib
+    /opt/homebrew/Cellar/spdlog/1.14.1/lib
+    /opt/homebrew/Cellar/fmt/10.2.1_1/lib
 )
 
 # Source files
@@ -42,6 +46,8 @@ set_target_properties(UTXO PROPERTIES
 # Link the libraries
 target_link_libraries(UTXO
     leveldb  # Link against LevelDB directly
+    spdlog
+    fmt
     ${CMAKE_DL_LIBS}  # Link the dynamic library for dlopen
 )
 
