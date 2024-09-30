@@ -106,6 +106,17 @@ void Legacy1()
 	return 0;
 }
 
+template <std::size_t N>
+std::array<uint8_t, N> vectorToArray(const std::vector<uint8_t>& vec) {
+	if (vec.size() != N) {
+	throw std::invalid_argument("Size of the vector must match the size of the array");
+	}
+	
+	std::array<uint8_t, N> arr;
+	std::copy(vec.begin(), vec.end(), arr.begin());
+	return arr;
+}
+
 void Legacy2()
 {
     	wallet::ec_private privateKey1("secret for obvious reason 2");
